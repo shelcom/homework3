@@ -6,7 +6,17 @@
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
+    <div id="sidebar">
+        {% block sidebar %}
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/login">Login</a></li>
+            </ul>
+        {% endblock %}
+    </div>
+
+    <div id="content">
         {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+    </div>
     </body>
 </html>
