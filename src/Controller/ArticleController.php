@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ArticleController extends Controller
 {
     /**
-     * @Route("/articles", methods={"GET"})
+     * @Route("/articles", name="article", methods={"GET"})
      */
     public function showAction()
     {
