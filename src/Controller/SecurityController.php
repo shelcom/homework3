@@ -21,4 +21,39 @@ class SecurityController extends AbstractController
 
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
+    /**
+     * @Route("/logout", name="app_logout")
+     */
+    public function logout()
+    {
+        // controller can be blank: it will never be executed!
+        throw new \Exception('Don\'t forget to activate logout in security.yaml');
+    }
+    /**
+     * @Route("/home", name="home")
+     */
+    public function homeAction()
+    {
+        return $this->render('base.html.twig', [
+            'message' => 'Welcome'
+        ]);
+    }
+    /**
+     * @Route("/article/home")
+     */
+    public function articleAction()
+    {
+        return $this->render('base.html.twig', [
+            'message' => 'Welcome'
+        ]);
+    }
+    /**
+     * @Route("/admin", name="admin")
+     */
+    public function adminAction()
+    {
+        return $this->render('base.html.twig', [
+            'message' => 'Welcome admin'
+        ]);
+    }
 }

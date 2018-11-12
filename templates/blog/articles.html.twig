@@ -1,9 +1,14 @@
-{% extends 'base.html.twig' %}
+
 {% block title %}
-    articles
+    Articles
 {% endblock %}
 
 {% block body %}
+    {% block sidebar %}
+        <ul>
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+    {% endblock %}
     <ul>
         {% for article in articles %}
             <li>{{ article.id }}</li>
