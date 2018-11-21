@@ -83,15 +83,14 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     {
         if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
             //return new RedirectResponse($this->router->generate('blog/articles'));
-            return new RedirectResponse($this->router->generate('article'));
+            return new RedirectResponse($targetPath);
         }
 
-        // For example : return new RedirectResponse($this->router->generate('some_route'));
-
+        return new RedirectResponse($this->router->generate('article'));
     }
 
     protected function getLoginUrl()
     {
-        return $this->router->generate('article');
+        return $this->router->generate('app_login');
     }
 }

@@ -25,11 +25,12 @@ class UserController extends Controller
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
+            return $this->redirectToRoute('app_login');
         }
         return $this->render(
             'register.html.twig',
             array('form' => $form->createView())
         );
     }
-   
+
 }
