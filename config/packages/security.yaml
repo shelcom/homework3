@@ -1,13 +1,11 @@
 security:
 
     role_hierarchy:
-        ROLE_VASYA: ROLE_USER
+        ROLE_USER:  ROLE_USER
 
     encoders:
         App\Entity\User:
             algorithm: bcrypt
-            cost: 12
-
 
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
@@ -16,19 +14,24 @@ security:
             entity:
                 class: App\Entity\User
                 property: email
-        # used to reload user from session & other features (e.g. switch_user)
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
             anonymous: true
+            form_login:
+                login_path: app_login
+                username_parameter: login[email]
+                password_parameter: login[password]
+                default_target_path: /
             guard:
                 authenticators:
                     - App\Security\LoginFormAuthenticator
-
             logout:
                 path: app_logout
+
+
             # activate different ways to authenticate
 
             # http_basic: true
@@ -38,7 +41,7 @@ security:
             # https://symfony.com/doc/current/security/form_login_setup.html
 
     # Easy way to control access for large sections of your site
-    # Note: Only the *first* access control that matches will be used
+    # Note: Only the first access control that matches will be used
     access_control:
-        - { path: ^/admin, roles: ROLE_VASYA }
+        - { path: ^/admin, roles:  ROLE_ADMIN }
         - { path: ^/home, roles: ROLE_USER }
