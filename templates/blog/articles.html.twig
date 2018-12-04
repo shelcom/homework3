@@ -3,16 +3,23 @@
         <li><a href="/logout">Logout</a></li>
     </ul>
 {% endblock %}
-{% block title %}
-    Articles
-{% endblock %}
 
 {% block body %}
 
-    <ul>
-        {% for article in articles %}
+    <ul><h2>Articles</h2>
+        {% for article in pagination %}
             <li>{{ article.id }}</li>
             <li>{{ article.text | title}}</li>
         {% endfor %}
     </ul>
+    <ul> <h2>Comments</h2>
+        {% for comment in comments %}
+            <li>{{ comment.article.id }}</li>
+            <li>{{ comment.body }}</li>
+            <br>
+        {% endfor %}
+    </ul>
+    <div class="navigation">
+        {{ knp_pagination_render(pagination) }}
+    </div>
 {% endblock %}

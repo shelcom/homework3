@@ -23,7 +23,7 @@ class UserFixture extends Fixture
         $user
             ->setFirstName('qwe')
             ->setLastName('qwe')
-            ->setRoles(['ROLE_VASYA', 'ROLE_USER'])
+            ->setRoles(['ROLE_USER'])
             ->setEmail('qwe@qwe.qwe')
             ->setPassword($encodedPassword);
         $manager->persist($user);
