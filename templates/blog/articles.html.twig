@@ -19,6 +19,11 @@
             <br>
         {% endfor %}
     </ul>
+    <ul> <h2>Tags</h2>
+        {% for tag in tag %}
+            {{ tag.name }}
+        {% endfor %}
+    </ul>
     <div class="navigation">
         {{ knp_pagination_render(pagination) }}
     </div>

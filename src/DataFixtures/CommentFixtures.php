@@ -10,6 +10,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Comment;
 use App\Entity\Article;
+use App\Entity\Tag;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -26,6 +27,9 @@ class CommentFixtures extends Fixture
                 $comment->setBody('This is the body of comment ' . $i . ' of article ' . $i);
                 $comment->setArticle($article);
                 $manager->persist($comment);
+                $tag = new Tag();
+                $tag->setName('some tag'.$i);
+                $manager->persist($tag);
 
             $manager->persist($article);
         }

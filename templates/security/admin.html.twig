@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+{% block title %}Create Article{% endblock %}
+{% block body %}
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button class="btn btn-lg btn-primary" type="submit">
+        Create
+    </button>
+    {{ form_end(form) }}
+
+    <ul><h2>Articles</h2>
+        {% for article in articles %}
+            <li>{{ article.id }}</li>
+            <li>{{ article.text | title}}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
