@@ -6,7 +6,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
-
+use Doctrine\Common\Collections\ArrayCollection;
 /**
  * @ORM\Entity
  * @ORM\Table(name="user")
@@ -32,10 +32,18 @@ class User implements UserInterface
      * @ORM\Column(type="json")
      */
     private $roles = [];
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\UserLike", mappedBy="user")
+     */
+    private $userLikes;
 
     public function __construct()
     {
         $this->roles = ['ROLE_USER'];
+        $this->userLikes = new ArrayCollection();
+
+
+
     }
 
     /**
@@ -87,7 +95,7 @@ class User implements UserInterface
      * @param string $email
      * @return User
      */
-    public function setEmail($email): self
+    public function setEmail($email)
     {
         $this->email = $email;
 
@@ -107,7 +115,7 @@ class User implements UserInterface
      * @param string $firstName
      * @return User
      */
-    public function setFirstName($firstName): self
+    public function setFirstName($firstName)
     {
         $this->firstName = $firstName;
 
@@ -126,7 +134,7 @@ class User implements UserInterface
      * @param string $lastName
      * @return User
      */
-    public function setLastName($lastName): self
+    public function setLastName($lastName)
     {
         $this->lastName = $lastName;
 
@@ -138,7 +146,7 @@ class User implements UserInterface
      *
      * @see UserInterface
      */
-    public function getUsername(): string
+    public function getUsername()
     {
         return (string) $this->email;
     }
@@ -146,13 +154,13 @@ class User implements UserInterface
     /**
      * @see UserInterface
      */
-    public function getRoles(): array
+    public function getRoles()
     {
         $roles = $this->roles;
         return array_unique($roles);
     }
 
-    public function setRoles(array $roles): self
+    public function setRoles(array $roles)
     {
         $this->roles = $roles;
 
@@ -162,15 +170,41 @@ class User implements UserInterface
     /**
      * @see UserInterface
      */
-    public function getPassword(): string
+    public function getPassword()
     {
         return (string) $this->password;
     }
 
-    public function setPassword(string $password): self
+    public function setPassword( $password)
     {
         $this->password = $password;
 
+        return $this;
+    }
+    /**
+     * @return ArrayCollection|UserLike[]
+     */
+    public function getUserLike()
+    {
+        return $this->userLikes;
+    }
+    public function addUserLike(UserLike $likes)
+    {
+        if (!$this->userLikes->contains($likes)) {
+            $this->userLikes[] = $likes;
+            $likes->setUser($this);
+        }
+        return $this;
+    }
+    public function removeUserLike(UserLike $likes)
+    {
+        if ($this->userLikes->contains($likes)) {
+            $this->userLikes->removeElement($likes);
+            // set the owning side to null (unless already changed)
+            if ($likes->getUser() === $this) {
+                $likes->setUser(null);
+            }
+        }
         return $this;
     }
 

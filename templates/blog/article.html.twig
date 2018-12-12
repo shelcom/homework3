@@ -1,0 +1,23 @@
+{% block body %}
+
+        <li>{{ article.id }}</li>
+        <li>{{ article.text | title}}</li>
+        <li> {% if not article.tags.empty %}
+                {% for tag in article.tags %}
+                        {{ tag.name }}
+                {% endfor %}
+        {% endif %}</li>
+        <ul> <h2>Comments</h2>
+                {% for comment in comments %}
+                        <li>{{ comment.article.id }}</li>
+                        <li>{{ comment.body }}</li>
+                        <br>
+                {% endfor %}
+        </ul>
+        {{ form_start(form) }}
+        {{ form_row(form.body) }}
+
+        <button type="submit">Submit!</button>
+        {{ form_end(form) }}
+
+{% endblock %}

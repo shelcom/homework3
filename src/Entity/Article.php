@@ -42,12 +42,19 @@ class Article
      * @ORM\OrderBy({"name": "ASC"})
      */
     private $tags;
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\UserLike", mappedBy="article")
+     */
+    private $userLikes;
+
+
 
 
     public function __construct()
     {
         $this->comments = new ArrayCollection();
         $this->tags = new ArrayCollection();
+        $this->userLikes = new ArrayCollection();
     }
 
     /**
@@ -125,4 +132,32 @@ class Article
         }
         return $this;
     }
+    /**
+     * @return ArrayCollection|UserLike[]
+     */
+    public function getUserLike()
+    {
+        return $this->userLikes;
+    }
+    public function addUserLike(UserLike $likes)
+    {
+        if (!$this->userLikes->contains($likes)) {
+            $this->userLikes[] = $likes;
+            $likes->setUser($this);
+        }
+        return $this;
+    }
+    public function removeUserLike(UserLike $likes)
+    {
+        if ($this->userLikes->contains($likes)) {
+            $this->userLikes->removeElement($likes);
+            // set the owning side to null (unless already changed)
+            if ($likes->getUser() === $this) {
+                $likes->setUser(null);
+            }
+        }
+        return $this;
+    }
+
+
 }

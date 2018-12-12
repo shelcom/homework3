@@ -4,12 +4,13 @@ namespace App\Controller;
 
 
 use App\Entity\Article;
-
 use App\Entity\Comment;
 use App\Entity\Tag;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use App\Repository\CommentRepository;
+use App\Form\CommentType;
 class ArticleController extends Controller
 {
     /**
@@ -40,4 +41,32 @@ class ArticleController extends Controller
         ]);
     }
 
+    /**
+     * @Route("/article/{id}", name="articles")
+     */
+ public function showArticle(Request $request, Article $article, CommentRepository $commentRepository)
+    {
+
+        $comments = new Comment();
+
+        $article->addComment($comments);
+        $form = $this->createForm(CommentType::class, $comments);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($comments);
+            $em->flush();
+
+            return $this->redirectToRoute('article', ['id' => $article->getId()]);
+        }
+
+        $comments = $commentRepository->findBy(['article' => $article]);
+
+        return $this->render('blog/article.html.twig', [
+            'article' => $article,
+            'comments' => $comments,
+            'form' => $form->createView(),
+        ]);
+    }
 }

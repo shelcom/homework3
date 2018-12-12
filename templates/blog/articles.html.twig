@@ -7,23 +7,14 @@
 {% block body %}
 
     <ul><h2>Articles</h2>
-        {% for article in pagination %}
+        {% for article in pagination  %}
+
             <li>{{ article.id }}</li>
             <li>{{ article.text | title}}</li>
+            <p><a class="more" href="{{ path('articles', { 'id': article.id }) }}">read more...</a></p>
         {% endfor %}
     </ul>
-    <ul> <h2>Comments</h2>
-        {% for comment in comments %}
-            <li>{{ comment.article.id }}</li>
-            <li>{{ comment.body }}</li>
-            <br>
-        {% endfor %}
-    </ul>
-    <ul> <h2>Tags</h2>
-        {% for tag in tag %}
-            {{ tag.name }}
-        {% endfor %}
-    </ul>
+
     <div class="navigation">
         {{ knp_pagination_render(pagination) }}
     </div>
