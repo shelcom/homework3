@@ -9,7 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Entity
  * @ORM\Table(name="article")
  */
-class Article
+class Article implements \JsonSerializable
 {
     /**
      * @var int
@@ -159,5 +159,13 @@ class Article
         }
 
         return $this;
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'id' => $this->getId(),
+            'text' => $this->getText(),
+        ];
     }
 }
