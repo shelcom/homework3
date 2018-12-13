@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-
 use App\Entity\Article;
 use App\Entity\Comment;
 use App\Entity\Tag;
@@ -11,6 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Repository\CommentRepository;
 use App\Form\CommentType;
+
 class ArticleController extends Controller
 {
     /**
@@ -27,26 +27,26 @@ class ArticleController extends Controller
         $tag = $this->getDoctrine()
             ->getRepository(Tag::class)
             ->findAll();
-        $paginator  = $this->get('knp_paginator');
+        $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
                 $articles,
         $request->query->getInt('page', 1)/*page number*/,
             2/*limit per page*/
         );
+
         return $this->render('blog/articles.html.twig', [
             'articles' => $articles,
             'comments' => $comments,
             'pagination' => $pagination,
-            'tag' => $tag
+            'tag' => $tag,
         ]);
     }
 
     /**
      * @Route("/article/{id}", name="articles")
      */
- public function showArticle(Request $request, Article $article, CommentRepository $commentRepository)
+    public function showArticle(Request $request, Article $article, CommentRepository $commentRepository)
     {
-
         $comments = new Comment();
 
         $article->addComment($comments);

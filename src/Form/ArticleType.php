@@ -3,15 +3,15 @@
  * Created by PhpStorm.
  * User: sergio
  * Date: 06.12.18
- * Time: 11:24
+ * Time: 11:24.
  */
 
 namespace App\Form;
+
 use App\Entity\Article;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\FormBuilderInterface;
-
 
 class ArticleType extends AbstractType
 {
@@ -25,9 +25,7 @@ class ArticleType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Article::class,
-            'attr'=>['novalidate'=>'novalidate']
+            'attr' => ['novalidate' => 'novalidate'],
         ]);
-
     }
-
 }

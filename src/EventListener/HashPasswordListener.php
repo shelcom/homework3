@@ -10,6 +10,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class HashPasswordListener implements EventSubscriber
 {
     private $passwordEncoder;
+
     public function __construct(UserPasswordEncoderInterface $passwordEncoder)
     {
         $this->passwordEncoder = $passwordEncoder;
@@ -33,5 +34,4 @@ class HashPasswordListener implements EventSubscriber
     {
         return ['prePersist', 'preUpdate'];
     }
-
 }

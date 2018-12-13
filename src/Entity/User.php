@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+
 /**
  * @ORM\Entity
  * @ORM\Table(name="user")
@@ -41,9 +42,6 @@ class User implements UserInterface
     {
         $this->roles = ['ROLE_USER'];
         $this->userLikes = new ArrayCollection();
-
-
-
     }
 
     /**
@@ -93,6 +91,7 @@ class User implements UserInterface
 
     /**
      * @param string $email
+     *
      * @return User
      */
     public function setEmail($email)
@@ -100,7 +99,6 @@ class User implements UserInterface
         $this->email = $email;
 
         return $this;
-
     }
 
     /**
@@ -113,6 +111,7 @@ class User implements UserInterface
 
     /**
      * @param string $firstName
+     *
      * @return User
      */
     public function setFirstName($firstName)
@@ -132,6 +131,7 @@ class User implements UserInterface
 
     /**
      * @param string $lastName
+     *
      * @return User
      */
     public function setLastName($lastName)
@@ -157,6 +157,7 @@ class User implements UserInterface
     public function getRoles()
     {
         $roles = $this->roles;
+
         return array_unique($roles);
     }
 
@@ -175,12 +176,13 @@ class User implements UserInterface
         return (string) $this->password;
     }
 
-    public function setPassword( $password)
+    public function setPassword($password)
     {
         $this->password = $password;
 
         return $this;
     }
+
     /**
      * @return ArrayCollection|UserLike[]
      */
@@ -188,14 +190,17 @@ class User implements UserInterface
     {
         return $this->userLikes;
     }
+
     public function addUserLike(UserLike $likes)
     {
         if (!$this->userLikes->contains($likes)) {
             $this->userLikes[] = $likes;
             $likes->setUser($this);
         }
+
         return $this;
     }
+
     public function removeUserLike(UserLike $likes)
     {
         if ($this->userLikes->contains($likes)) {
@@ -205,6 +210,7 @@ class User implements UserInterface
                 $likes->setUser(null);
             }
         }
+
         return $this;
     }
 
@@ -224,5 +230,4 @@ class User implements UserInterface
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
-
 }
