@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Tests\SecurityControllerTest;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class SecurityControllerTest extends WebTestCase
 {

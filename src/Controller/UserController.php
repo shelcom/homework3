@@ -1,13 +1,14 @@
 <?php
+
 namespace App\Controller;
+
 use App\Entity\User;
 use App\Form\UserType;
-use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
-//use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
+//use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserController extends Controller
 {
@@ -25,12 +26,13 @@ class UserController extends Controller
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
+
             return $this->redirectToRoute('app_login');
         }
+
         return $this->render(
             'register.html.twig',
-            array('form' => $form->createView())
+            ['form' => $form->createView()]
         );
     }
-
 }

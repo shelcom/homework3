@@ -3,12 +3,12 @@
  * Created by PhpStorm.
  * User: sergio
  * Date: 21.11.18
- * Time: 15:09
+ * Time: 15:09.
  */
 
 namespace App\Tests;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class ArticleControllerTest extends WebTestCase
 {

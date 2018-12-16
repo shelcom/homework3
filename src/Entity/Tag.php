@@ -8,7 +8,6 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="App\Repository\TagRepository")
  * @ORM\Table(name="tag")
  */
-
 class Tag
 {
     /**
@@ -26,7 +25,6 @@ class Tag
      * @ORM\Column(type="string", unique=true)
      */
     private $name;
-    
 
     public function getId()
     {
@@ -38,7 +36,7 @@ class Tag
         return $this->name;
     }
 
-    public function setName( $name)
+    public function setName($name)
     {
         $this->name = $name;
 

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controller;
+
 use App\Entity\Article;
 use App\Entity\User;
 use App\Form\LoginType;
@@ -12,17 +13,16 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
-
-        /**
-         * @Route("/login", name="app_login")
-         */
-        public function loginAction(AuthenticationUtils $authenticationUtils)
+    /**
+     * @Route("/login", name="app_login")
+     */
+    public function loginAction(AuthenticationUtils $authenticationUtils)
     {
         $user = new User();
         $user->setEmail($authenticationUtils->getLastUsername());
 
         $form = $this->createForm(LoginType::class, $user, [
-            'action' => $this->generateUrl('login_check')
+            'action' => $this->generateUrl('login_check'),
         ]);
 
         if ($error = $authenticationUtils->getLastAuthenticationError()) {
@@ -33,6 +33,7 @@ class SecurityController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
     /**
      * @Route("/admin" , name="admin")
      */
@@ -48,7 +49,6 @@ class SecurityController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $em->persist($article);
             $em->flush();
-
         }
 
         return $this->render('security/admin.html.twig', [
@@ -60,8 +60,8 @@ class SecurityController extends AbstractController
 
     public function article(Request $request)
     {
-
     }
+
     /**
      * @Route("/logout", name="app_logout")
      */
@@ -70,6 +70,4 @@ class SecurityController extends AbstractController
         // controller can be blank: it will never be executed!
         throw new \Exception('Don\'t forget to activate logout in security.yaml');
     }
-
-
 }

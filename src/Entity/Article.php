@@ -1,18 +1,15 @@
 <?php
 
-
 namespace App\Entity;
-
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="article")
  */
-class Article
+class Article implements \JsonSerializable
 {
     /**
      * @var int
@@ -47,9 +44,6 @@ class Article
      */
     private $userLikes;
 
-
-
-
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -68,7 +62,6 @@ class Article
     /**
      *  @return null|string
      */
-
     public function getText()
     {
         return $this->text;
@@ -96,6 +89,7 @@ class Article
 
     /**
      * @param Tag[]|ArrayCollection $tags
+     *
      * @return Article
      */
     public function setTags($tags)
@@ -105,7 +99,6 @@ class Article
         return $this;
     }
 
-
     /**
      * @return Collection|Comment[]
      */
@@ -113,14 +106,17 @@ class Article
     {
         return $this->comments;
     }
+
     public function addComment(Comment $comment)
     {
         if (!$this->comments->contains($comment)) {
             $this->comments[] = $comment;
             $comment->setArticle($this);
         }
+
         return $this;
     }
+
     public function removeComment(Comment $comment)
     {
         if ($this->comments->contains($comment)) {
@@ -130,8 +126,10 @@ class Article
                 $comment->setArticle(null);
             }
         }
+
         return $this;
     }
+
     /**
      * @return ArrayCollection|UserLike[]
      */
@@ -139,14 +137,17 @@ class Article
     {
         return $this->userLikes;
     }
+
     public function addUserLike(UserLike $likes)
     {
         if (!$this->userLikes->contains($likes)) {
             $this->userLikes[] = $likes;
             $likes->setUser($this);
         }
+
         return $this;
     }
+
     public function removeUserLike(UserLike $likes)
     {
         if ($this->userLikes->contains($likes)) {
@@ -156,8 +157,15 @@ class Article
                 $likes->setUser(null);
             }
         }
+
         return $this;
     }
 
-
+    public function jsonSerialize()
+    {
+        return [
+            'id' => $this->getId(),
+            'text' => $this->getText(),
+        ];
+    }
 }

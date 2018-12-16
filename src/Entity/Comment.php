@@ -4,8 +4,6 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-
-
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CommentRepository")
  * @ORM\Table(name="comment")
@@ -40,7 +38,7 @@ class Comment
         return $this->body;
     }
 
-    public function setBody( $body)
+    public function setBody($body)
     {
         $this->body = $body;
 
@@ -51,9 +49,11 @@ class Comment
     {
         return $this->article;
     }
-    public function setArticle( $article)
+
+    public function setArticle($article)
     {
         $this->article = $article;
+
         return $this;
     }
 }
