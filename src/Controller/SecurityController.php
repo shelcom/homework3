@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
+
 class SecurityController extends AbstractController
 {
 
@@ -27,6 +28,7 @@ class SecurityController extends AbstractController
 
         if ($error = $authenticationUtils->getLastAuthenticationError()) {
             $this->addFlash('message', $error->getMessage());
+
         }
 
         return $this->render('security/login.html.twig', [
@@ -58,9 +60,31 @@ class SecurityController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/post", name="")
+     */
     public function article(Request $request)
     {
+        $article = new Article();
+        $form = $this->createForm(ArticleType::class, $article);
+        $form->handleRequest($request);
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $img = $form['image']->getData();
+            if($img){
+                $fileLocation = $this->get('app.s3_file_uploader')->putFileToBucket($img, 'images/cafe-images/'.uniqid().'/cafe-image');
+                $article->setImage($fileLocation);
+            }
+            $em->persist($article);
+            $em->flush();
+            return $this->redirectToRoute('article');
+
+        }
+
+        return $this->render('blog/post.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
     /**
      * @Route("/logout", name="app_logout")

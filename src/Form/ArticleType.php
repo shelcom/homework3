@@ -8,6 +8,7 @@
 
 namespace App\Form;
 use App\Entity\Article;
+use Faker\Provider\Image;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -18,7 +19,11 @@ class ArticleType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('text');
+            ->add('title')
+            ->add('body')
+            ->add('image'
+            );
+
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -1,21 +1,21 @@
+{% extends 'blog/base.html.twig' %}
+
 {% block sidebar %}
-    <ul>
-        <li><a href="/logout">Logout</a></li>
-    </ul>
 {% endblock %}
 
 {% block body %}
 
-    <ul><h2>Articles</h2>
+    <ul class="blog-body">
         {% for article in pagination  %}
-
-            <li>{{ article.id }}</li>
-            <li>{{ article.text | title}}</li>
-            <p><a class="more" href="{{ path('articles', { 'id': article.id }) }}">read more...</a></p>
+            <h2>{{ article.title | title}}</h2>
+           <div class="article-images"> <img src="{{ asset(['/images/', article.image]|join) }}" alt=""></div>
+            <div class="article-body"> {{ article.body}}</div>
+            <p><a class="more" href="{{ path('articles', { 'id': article.id }) }}">Read more...</a></p>
         {% endfor %}
     </ul>
-
+<div class="pagination">
     <div class="navigation">
         {{ knp_pagination_render(pagination) }}
     </div>
+</div>
 {% endblock %}

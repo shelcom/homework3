@@ -21,7 +21,12 @@ class CommentFixtures extends Fixture
     {
         for ($i = 0; $i < 4; $i++) {
             $article = new Article();
-            $article->setText('This is a body of article ' . $i);
+            $article->setImage('symfony4.jpg');
+            $article->setTitle('This is a body of article. ');
+            $article->setBody('This is a body of article. This is a body of article.
+             This is a body of article.This is a body of article.
+             This is a body of article.This is a body of article. 2
+             ' . $i);
 
                 $comment = new Comment();
                 $comment->setBody('This is the body of comment ' . $i . ' of article ' . $i);

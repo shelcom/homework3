@@ -1,14 +1,12 @@
 {% extends 'blog/base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}{% endblock %}
 
 {% block body %}
-<div class="post">
-    {{ form_start(form) }}
+<div class="post"> {{ form_start(form) }}
     {{ form_widget(form) }}
     <button class="btn btn-lg btn-primary buttn" type="submit">
-        Sign in
+        Submit
     </button>
-    {{ form_end(form) }}
-    </div>
+    {{ form_end(form) }}</div>
 {% endblock %}

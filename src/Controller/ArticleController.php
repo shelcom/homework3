@@ -14,7 +14,7 @@ use App\Form\CommentType;
 class ArticleController extends Controller
 {
     /**
-     * @Route("/articles", name="article", methods={"GET"})
+     * @Route("/", name="article", methods={"GET"})
      */
     public function showAction(Request $request)
     {
@@ -38,6 +38,7 @@ class ArticleController extends Controller
             'comments' => $comments,
             'pagination' => $pagination,
             'tag' => $tag
+
         ]);
     }
 
@@ -52,11 +53,13 @@ class ArticleController extends Controller
         $article->addComment($comments);
         $form = $this->createForm(CommentType::class, $comments);
         $form->handleRequest($request);
+       
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($comments);
             $em->flush();
+
 
             return $this->redirectToRoute('article', ['id' => $article->getId()]);
         }

@@ -6,6 +6,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 /**
@@ -28,7 +29,12 @@ class Article
      *
      * @ORM\Column(type="string")
      */
-    private $text;
+    private $title;
+   
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $body;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="article", orphanRemoval=true)
@@ -47,7 +53,13 @@ class Article
      */
     private $userLikes;
 
-
+    /**
+     * @var string $image
+     * @Assert\File( maxSize = "1024k", mimeTypesMessage = "Please upload a valid Image")
+     * @ORM\Column(name="image", type="string", length=255, nullable=true)
+     */
+    private $image;
+    
 
 
     public function __construct()
@@ -56,7 +68,17 @@ class Article
         $this->tags = new ArrayCollection();
         $this->userLikes = new ArrayCollection();
     }
+    public function getImage()
+{
+return $this->image;
+}
 
+public function setImage( $image)
+{
+    $this->image = $image;
+
+    return $this;
+}
     /**
      * @return int|null
      */
@@ -69,9 +91,9 @@ class Article
      *  @return null|string
      */
 
-    public function getText()
+    public function getTitle()
     {
-        return $this->text;
+        return $this->title;
     }
 
     /**
@@ -79,13 +101,23 @@ class Article
      *
      * @return Article
      */
-    public function setText($text)
+    public function setTitle($title)
     {
-        $this->text = $text;
+        $this->title = $title;
 
         return $this;
     }
+    public function getBody()
+    {
+        return $this->body;
+    }
 
+    public function setBody( $body)
+    {
+        $this->body = $body;
+
+        return $this;
+    }
     /**
      * @return Tag[]|ArrayCollection
      */

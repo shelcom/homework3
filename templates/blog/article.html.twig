@@ -1,23 +1,38 @@
+{% extends 'blog/base.html.twig' %}
+{% block sidebar %}
+{% endblock %}
 {% block body %}
 
-        <li>{{ article.id }}</li>
-        <li>{{ article.text | title}}</li>
-        <li> {% if not article.tags.empty %}
+
+
+        <div class="article-blog"> <h2>{{ article.title | title}}</h2>
+    <div class="article-images"><img src="{{ asset(['/images/', article.image]|join) }}" alt=""></div>
+    <div class="article-body"> {{ article.body}}</div>
+     {% if not article.tags.empty %}
                 {% for tag in article.tags %}
                         {{ tag.name }}
                 {% endfor %}
-        {% endif %}</li>
-        <ul> <h2>Comments</h2>
-                {% for comment in comments %}
-                        <li>{{ comment.article.id }}</li>
-                        <li>{{ comment.body }}</li>
+        {% endif %}
+         <h2>Comments</h2>
+              {% for comment in comments %}
+                     <div class="her">{{ comment.body }}</div>
                         <br>
                 {% endfor %}
-        </ul>
+
+
+    <div class="comments-form">   {% if is_granted('IS_AUTHENTICATED_FULLY') %}
         {{ form_start(form) }}
-        {{ form_row(form.body) }}
+        {{ form_row(form.body) }}</div>
 
-        <button type="submit">Submit!</button>
+        <div class="submit"> <button type="submit" class="btn btn-success buttn">Submit!</button>
         {{ form_end(form) }}
-
+        </div>
+    {% endif %}
+        </div>
 {% endblock %}
+
+ {% block javascripts %}
+         {{ parent() }}
+         <script src="{{ asset('js/article_show') }}"></script>
+
+ {% endblock %}
