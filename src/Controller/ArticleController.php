@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-
+use App\Form\ArticleType;
 use App\Entity\Article;
 use App\Entity\Comment;
 use App\Entity\Tag;
@@ -69,6 +69,33 @@ class ArticleController extends Controller
         return $this->render('blog/article.html.twig', [
             'article' => $article,
             'comments' => $comments,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/post", name="")
+     */
+    public function article(Request $request)
+    {
+        $article = new Article();
+        $form = $this->createForm(ArticleType::class, $article);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $img = $form['image']->getData();
+            if($img){
+                $fileLocation = $this->get('public/images')->putFileToBucket($img, 'images/cafe-images/'.uniqid().'/cafe-image');
+                $article->setImage($fileLocation);
+            }
+            $em->persist($article);
+            $em->flush();
+            return $this->redirectToRoute('article');
+
+        }
+
+        return $this->render('blog/post.html.twig', [
             'form' => $form->createView(),
         ]);
     }

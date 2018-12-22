@@ -1,15 +1,13 @@
 <?php
 
 namespace App\Controller;
-use App\Entity\Article;
 use App\Entity\User;
 use App\Form\LoginType;
-use App\Form\ArticleType;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
+
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-
 
 class SecurityController extends AbstractController
 {
@@ -35,57 +33,9 @@ class SecurityController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-    /**
-     * @Route("/admin" , name="admin")
-     */
-    public function admin(Request $request)
-    {
-        $article = new Article();
-        $form = $this->createForm(ArticleType::class, $article);
-        $form->handleRequest($request);
-        $articles = $this->getDoctrine()
-            ->getRepository(Article::class)
-            ->findAll();
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($article);
-            $em->flush();
+    
 
-        }
-
-        return $this->render('security/admin.html.twig', [
-            'article' => $article,
-            'articles' => $articles,
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * @Route("/post", name="")
-     */
-    public function article(Request $request)
-    {
-        $article = new Article();
-        $form = $this->createForm(ArticleType::class, $article);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $img = $form['image']->getData();
-            if($img){
-                $fileLocation = $this->get('app.s3_file_uploader')->putFileToBucket($img, 'images/cafe-images/'.uniqid().'/cafe-image');
-                $article->setImage($fileLocation);
-            }
-            $em->persist($article);
-            $em->flush();
-            return $this->redirectToRoute('article');
-
-        }
-
-        return $this->render('blog/post.html.twig', [
-            'form' => $form->createView(),
-        ]);
-    }
+    
     /**
      * @Route("/logout", name="app_logout")
      */

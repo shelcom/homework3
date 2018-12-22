@@ -19,7 +19,25 @@ html {height:100%}
 .dropdown-menu, .dropdown-menu.show {
     right: 0;
 }
+.fggf{
+    margin-bottom:  20px;
+    width: 400px;
+    height: 100px;
+}
+.clearfix{
+    clear: both;
+    display: block;
 
+}
+.buttn_showgroup{
+    display: block;
+    float: left;
+}
+.buttn_showcreate{
+display: block;
+    float: right;
+
+}
 .space-brand {
     color: #fff;
     font-weight: bold;
