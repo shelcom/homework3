@@ -22,11 +22,11 @@ class ArticleController extends Controller
     }
 
     /**
-     * @Route("api/article/{text}")
+     * @Route("api/article/{id}")
      */
-    public function showArticle(Article $text)
+    public function showArticle(Article $article)
     {
-        return $this->json(['article' => $text]);
+        return $this->json(['article' => $article]);
     }
 
     /**
