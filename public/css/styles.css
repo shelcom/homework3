@@ -184,9 +184,21 @@ a:hover.more{
     }
 }
 .article-images{
+    position: relative;
+    display: block;
     margin-bottom: 20px;
-    width:10%;
-    height: 10%;
+    width: 600px;
+    height: 400px;
+
+}
+.article-images img{
+    position: absolute;
+    object-fit: cover;
+    z-index:0;top:0;left:0;
+    display: block;
+    margin-bottom: 20px;
+    width: 600px;
+    height: 400px;
 
 }
 .article-img {

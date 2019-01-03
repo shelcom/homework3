@@ -37,7 +37,7 @@ class Article
     private $body;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="article", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="article", orphanRemoval=true, cascade={"remove"})
      */
     private $comments;
     /**
@@ -49,7 +49,8 @@ class Article
      */
     private $tags;
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\UserLike", mappedBy="article")
+     * 
+     * @ORM\OneToMany(targetEntity="App\Entity\UserLike", mappedBy="article", cascade={"remove"})
      */
     private $userLikes;
 

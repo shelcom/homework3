@@ -99,19 +99,26 @@ class AdminController extends AbstractController
      */
     public function edit(Request $request, Article $article)
     {
+        $user = $this->getUser();
         $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
+        $article->setUser($user);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
             $em = $this->getDoctrine()->getManager();
+            $data = $form->getData();
+            $img = $form->get('image')->getData();
+            $fileName = md5(uniqid()).'.'.$img->guessExtension();
+            $img->move($this->getParameter('image_directory'), $fileName);
+            $data->setImage($fileName);
+
             $em->persist($article);
             $em->flush();
-            return $this->redirectToRoute('admin', ['id' => $article->getId()]);
+            return $this->redirectToRoute('admin');
+
         }
 
         return $this->render('admin/edit.html.twig', [
-            'article' => $article,
             'form' => $form->createView(),
         ]);
     }
