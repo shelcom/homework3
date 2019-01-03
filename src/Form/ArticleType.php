@@ -13,6 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\FormBuilderInterface;
 
 
+
 class ArticleType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -20,8 +21,8 @@ class ArticleType extends AbstractType
         $builder
             ->add('title')
             ->add('body')
-            ->add('image'
-            );
+            ->add('image');
+        
 
     }
 

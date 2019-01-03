@@ -7,7 +7,14 @@
 
         <div class="article-blog"> <h2>{{ article.title | title}}</h2>
     <div class="article-images"><img src="{{ asset(['/images/', article.image]|join) }}" alt=""></div>
+            <tr>
+                <td>{{ article.createdAt|date('F j, Y') }}</td>
+            </tr>
     <div class="article-body"> {{ article.body}}</div>
+
+
+
+            <p><a class="button like" href="{{ path('like', { 'id':article.id }) }}"> ❤ {{ allLike }} </a></p>
      {% if not article.tags.empty %}
                 {% for tag in article.tags %}
                         {{ tag.name }}

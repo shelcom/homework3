@@ -200,7 +200,6 @@ class User implements UserInterface
     {
         if ($this->userLikes->contains($likes)) {
             $this->userLikes->removeElement($likes);
-            // set the owning side to null (unless already changed)
             if ($likes->getUser() === $this) {
                 $likes->setUser(null);
             }

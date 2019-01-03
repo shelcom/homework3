@@ -43,60 +43,60 @@ class UserLike
      * @return mixed
      */
     public function getLikes()
-    {
-        return $this->likes;
-    }
+{
+return $this->likes;
+}
 
 /**
  * @param mixed $likes
  * @return UserLike
  */
 public function setLikes($likes)
-    {
-        $this->likes = $likes;
+{
+    $this->likes = $likes;
 
-        return $this;
-    }
+    return $this;
+}
 
-    /**
-     * @return mixed
-     */
-    public function getUser()
+/**
+ * @return mixed
+ */
+public function getUser()
 {
     return $this->user;
 }
 
-    /**
-     * @param mixed $user
-     * @return UserLike
-     */
-    public function setUser($user)
+/**
+ * @param mixed $user
+ * @return UserLike
+ */
+public function setUser($user)
 {
     $this->user = $user;
 
     return $this;
 }
 
-    /**
-     * @return mixed
-     */
-    public function getArticle()
+/**
+ * @return mixed
+ */
+public function getArticle()
 {
     return $this->article;
 }
 
-    /**
-     * @param mixed $article
-     * @return UserLike
-     */
-    public function setArticle($article)
+/**
+ * @param mixed $article
+ * @return UserLike
+ */
+public function setArticle($article)
 {
     $this->article = $article;
 
     return $this;
 }
 
-    public function __toString() {
+public function __toString() {
     return $this->likes;
 }
 

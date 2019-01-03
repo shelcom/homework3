@@ -185,6 +185,8 @@ a:hover.more{
 }
 .article-images{
     margin-bottom: 20px;
+    width:10%;
+    height: 10%;
 
 }
 .article-img {

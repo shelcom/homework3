@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\File;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Form\CommentType;
-
+use App\Services\LikeServices;
 
 class AdminController extends AbstractController
 {
@@ -46,9 +46,9 @@ class AdminController extends AbstractController
     /**
      * @Route("admin/article/{id}", name="admin/articles")
      */
-    public function showArticle(Request $request, Article $article)
+    public function showArticle(Request $request, Article $article, LikeServices $likes)
     {
-
+        $allLike = $likes->countLikes($article);
         $comments = new Comment();
 
         $article->addComment($comments);
@@ -70,6 +70,7 @@ class AdminController extends AbstractController
         return $this->render('blog/article.html.twig', [
             'article' => $article,
             'comments' => $comments,
+            'allLike' => $allLike,
             'form' => $form->createView(),
         ]);
     }
@@ -119,17 +120,18 @@ class AdminController extends AbstractController
      */
     public function create(Request $request)
     {
+        $user = $this->getUser();
         $article = new Article();
         $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
-
+        $article->setUser($user);
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $img = $form['image']->getData();
-            if($img){
-                $fileLocation = $this->get('public/images')->putFileToBucket($img, 'images/cafe-images/'.uniqid().'/cafe-image');
-                $article->setImage($fileLocation);
-            }
+            $data = $form->getData();
+            $img = $form->get('image')->getData();
+            $fileName = md5(uniqid()).'.'.$img->guessExtension();
+            $img->move($this->getParameter('image_directory'), $fileName);
+            $data->setImage($fileName);
             $em->persist($article);
             $em->flush();
             return $this->redirectToRoute('admin');

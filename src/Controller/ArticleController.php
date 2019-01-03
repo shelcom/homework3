@@ -5,12 +5,15 @@ namespace App\Controller;
 use App\Form\ArticleType;
 use App\Entity\Article;
 use App\Entity\Comment;
+use App\Entity\UserLike;
 use App\Entity\Tag;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Repository\CommentRepository;
+use App\Services\LikeServices;
 use App\Form\CommentType;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 class ArticleController extends Controller
 {
     /**
@@ -45,10 +48,11 @@ class ArticleController extends Controller
     /**
      * @Route("/article/{id}", name="articles")
      */
- public function showArticle(Request $request, Article $article, CommentRepository $commentRepository)
+ public function showArticle(Request $request, Article $article, CommentRepository $commentRepository, LikeServices $likes)
     {
-
+        $allLike = $likes->countLikes($article);
         $comments = new Comment();
+
 
         $article->addComment($comments);
         $form = $this->createForm(CommentType::class, $comments);
@@ -69,6 +73,7 @@ class ArticleController extends Controller
         return $this->render('blog/article.html.twig', [
             'article' => $article,
             'comments' => $comments,
+            'allLike' => $allLike,
             'form' => $form->createView(),
         ]);
     }
@@ -77,18 +82,20 @@ class ArticleController extends Controller
      * @Route("/post", name="")
      */
     public function article(Request $request)
-    {
+    {   $user = $this->getUser();
         $article = new Article();
         $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
+        $article->setUser($user);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $img = $form['image']->getData();
-            if($img){
-                $fileLocation = $this->get('public/images')->putFileToBucket($img, 'images/cafe-images/'.uniqid().'/cafe-image');
-                $article->setImage($fileLocation);
-            }
+            $data = $form->getData();
+            $img = $form->get('image')->getData();
+            $fileName = md5(uniqid()).'.'.$img->guessExtension();
+            $img->move($this->getParameter('image_directory'), $fileName);
+            $data->setImage($fileName);
+
             $em->persist($article);
             $em->flush();
             return $this->redirectToRoute('article');
@@ -98,5 +105,33 @@ class ArticleController extends Controller
         return $this->render('blog/post.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+    /**
+     * @Route("/article/{id}/like", name="like")
+     */
+    public function LikeAction(Article $article)
+    {
+        $user = $this->getUser();
+
+        $em = $this->getDoctrine()->getManager();
+        $like = $em->getRepository(UserLike::class)
+            ->findOneBy(['user' => $user, 'article' => $article]);
+
+        if (!$like) {
+            $like = new UserLike();
+            $like
+                ->setArticle($article)
+                ->setUser($user)
+                ->setLikes(true);
+            $em->persist($like);
+            $em->flush();
+
+        } else {
+            $em->remove($like);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('article', ['id' => $article->getId()]);
+
     }
 }
