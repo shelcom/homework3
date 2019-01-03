@@ -22,8 +22,6 @@ class ArticleType extends AbstractType
             ->add('title')
             ->add('body')
             ->add('image');
-        
-
     }
 
     public function configureOptions(OptionsResolver $resolver)
