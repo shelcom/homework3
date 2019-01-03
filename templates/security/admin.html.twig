@@ -1,0 +1,18 @@
+{% extends 'blog/base.html.twig' %}
+{% block title %}Create Article{% endblock %}
+{% block body %}
+
+
+    <ul class="blog-body clearfix">
+    {% for article in articles  %}
+       <div class="fggf">  <h2>{{ article.title | title}}</h2>
+
+
+        <div class="buttn_showgroup"> <a class="more" href="{{ path('admin/articles', { 'id': article.id }) }}">Show</a>
+        <a class="more" href="{{ path('delete/articles', { 'id': article.id }) }}">Delete</a>
+        <a class="more" href="{{ path('edit/articles', { 'id': article.id }) }}">Edit</a></div>
+        <div class="buttn_showcreate"> <a class="more" href="{{ path('create/articles', { 'id': article.id }) }}">Create</a></div></div>
+    {% endfor %}
+</ul>
+
+{% endblock %}

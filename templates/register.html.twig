@@ -1,0 +1,12 @@
+{% extends 'blog/base.html.twig' %}
+{% block body %}
+    <div class="post">
+    {{ form_start(form) }}
+    {{ form_row(form.firstName) }}
+    {{ form_row(form.lastName) }}
+    {{ form_row(form.email) }}
+    {{ form_row(form.password.first) }}
+    {{ form_row(form.password.second) }}
+    <button class="btn btn-lg btn-primary buttn" type="submit">Register!</button>
+    {{ form_end(form) }}</div>
+{% endblock %}

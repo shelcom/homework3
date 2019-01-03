@@ -1,0 +1,25 @@
+{% extends 'blog/base.html.twig' %}
+
+{% block sidebar %}
+{% endblock %}
+
+{% block body %}
+
+    <ul class="blog-body">
+        {% for article in pagination  %}
+            <h2>{{ article.title | title}}</h2>
+           <div class="article-images"> <img src="{{ asset(['/images/', article.image]|join) }}" alt=""></div>
+            <tr>
+                <td>{{ article.createdAt|date('F j, Y') }}</td>,
+            </tr>
+            {{article.user.email}}
+            <div class="article-body"> {{ article.body}}</div>
+            <p><a class="more" href="{{ path('articles', { 'id': article.id }) }}">Read more...</a></p>
+        {% endfor %}
+    </ul>
+<div class="pagination">
+    <div class="navigation">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+</div>
+{% endblock %}

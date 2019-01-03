@@ -1,0 +1,45 @@
+{% extends 'blog/base.html.twig' %}
+{% block sidebar %}
+{% endblock %}
+{% block body %}
+
+
+
+        <div class="article-blog"> <h2>{{ article.title | title}}</h2>
+    <div class="article-images"><img src="{{ asset(['/images/', article.image]|join) }}" alt=""></div>
+            <tr>
+                <td>{{ article.createdAt|date('F j, Y') }}</td>
+            </tr>
+    <div class="article-body"> {{ article.body}}</div>
+
+
+
+            <p><a class="button like" href="{{ path('like', { 'id':article.id }) }}"> ❤ {{ allLike }} </a></p>
+     {% if not article.tags.empty %}
+                {% for tag in article.tags %}
+                        {{ tag.name }}
+                {% endfor %}
+        {% endif %}
+         <h2>Comments</h2>
+              {% for comment in comments %}
+                     <div class="her">{{ comment.body }}</div>
+                        <br>
+                {% endfor %}
+
+
+    <div class="comments-form">   {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        {{ form_start(form) }}
+        {{ form_row(form.body) }}</div>
+
+        <div class="submit"> <button type="submit" class="btn btn-success buttn">Submit!</button>
+        {{ form_end(form) }}
+        </div>
+    {% endif %}
+        </div>
+{% endblock %}
+
+ {% block javascripts %}
+         {{ parent() }}
+         <script src="{{ asset('js/article_show') }}"></script>
+
+ {% endblock %}
