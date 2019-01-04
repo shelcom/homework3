@@ -9,6 +9,8 @@
 namespace App\Controller;
 use App\Entity\Article;
 use App\Entity\Comment;
+use App\Entity\User;
+use App\Form\AdminType;
 use App\Form\ArticleType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,7 +18,7 @@ use Symfony\Component\HttpFoundation\File;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Form\CommentType;
 use App\Services\LikeServices;
-
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 class AdminController extends AbstractController
 {
     /**
@@ -43,6 +45,45 @@ class AdminController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+    /**
+     * @Route("/admin/dashboard" , name="admin/dashboard")
+     */
+    public function dashboard()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $users = $em->getRepository(User::class)->findAll();
+
+        return $this->render('admin/dashboard.html.twig', [
+            'users' => $users
+        ]);
+    }
+
+    /**
+     * @Route("admin/edituser/{id}" , name="user.edit")
+     *
+     * @paramConverter("user", class="App\Entity\User")
+     * @param User $user
+     * @return \Symfony\Component\Form\Extension\HttpFoundation\Response
+     */
+    public function editUserAction(Request $request, User $user)
+    {   $em = $this->getDoctrine()->getManager();
+        $form = $this->createForm(AdminType::class, $user);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($user);
+            $em->flush();
+
+            return $this->redirectToRoute('admin/dashboard');
+
+        }
+
+
+        return $this->render('admin/editUser.html.twig', [
+            'users' => $user,
+            'form' => $form->createView(),
+        ]);
+    }
+
     /**
      * @Route("admin/article/{id}", name="admin/articles")
      */
@@ -99,26 +140,17 @@ class AdminController extends AbstractController
      */
     public function edit(Request $request, Article $article)
     {
-        $user = $this->getUser();
         $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
-        $article->setUser($user);
-
         if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
             $em = $this->getDoctrine()->getManager();
-            $data = $form->getData();
-            $img = $form->get('image')->getData();
-            $fileName = md5(uniqid()).'.'.$img->guessExtension();
-            $img->move($this->getParameter('image_directory'), $fileName);
-            $data->setImage($fileName);
-
             $em->persist($article);
             $em->flush();
-            return $this->redirectToRoute('admin');
-
+            return $this->redirectToRoute('admin', ['id' => $article->getId()]);
         }
-
         return $this->render('admin/edit.html.twig', [
+            'article' => $article,
             'form' => $form->createView(),
         ]);
     }
