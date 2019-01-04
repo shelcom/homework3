@@ -1,0 +1,14 @@
+{% extends 'blog/base.html.twig' %}
+{% block title %}Dashboard{% endblock %}
+{% block body %}
+   <ul class="list-group">
+    {% for user in users %}
+        <li class="list-group-item">
+            <a href="{{ path('user.edit', {id: user.id}) }}">
+                {{ user.email }}
+            </a>
+        </li>
+    {% endfor %}
+   </ul>
+
+{% endblock %}
