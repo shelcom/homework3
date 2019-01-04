@@ -2,31 +2,24 @@
 /**
  * Created by PhpStorm.
  * User: sergio
- * Date: 06.12.18
- * Time: 11:24
+ * Date: 04.01.19
+ * Time: 18:19
  */
-
 namespace App\Form;
 use App\Entity\Article;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\File;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 
-class ArticleType extends AbstractType
+class EditType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('title')
-            ->add('body')
-            ->add('image', FileType::class, array(
-                'label' => 'Image',
-                'data_class' => null,
-                'required'    => false
-            ));
+            ->add('body');
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -37,5 +30,4 @@ class ArticleType extends AbstractType
         ]);
 
     }
-
 }

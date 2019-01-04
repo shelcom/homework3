@@ -33,8 +33,16 @@ class SecurityController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-    
 
+    /**
+     * @Route("/profile", name="profile")
+     */
+    public function profile()
+    {
+        return $this->render('blog/profile.html.twig', [
+            
+        ]);
+    }
     
     /**
      * @Route("/logout", name="app_logout")

@@ -19,6 +19,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Form\CommentType;
 use App\Services\LikeServices;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 class AdminController extends AbstractController
 {
     /**
@@ -65,11 +67,14 @@ class AdminController extends AbstractController
      * @param User $user
      * @return \Symfony\Component\Form\Extension\HttpFoundation\Response
      */
-    public function editUserAction(Request $request, User $user)
+    public function editUserAction(Request $request, User $user, UserPasswordEncoderInterface $passwordEncoder)
     {   $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(AdminType::class, $user);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
+            $password = $passwordEncoder->encodePassword($user, $user->getPassword());
+            $user->setPassword($password);
             $em->persist($user);
             $em->flush();
 
@@ -145,6 +150,11 @@ class AdminController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
             $em = $this->getDoctrine()->getManager();
+            $data = $form->getData();
+            $img = $form->get('image')->getData();
+            $fileName = md5(uniqid()).'.'.$img->guessExtension();
+            $img->move($this->getParameter('image_directory'), $fileName);
+            $data->setImage($fileName);
             $em->persist($article);
             $em->flush();
             return $this->redirectToRoute('admin', ['id' => $article->getId()]);
