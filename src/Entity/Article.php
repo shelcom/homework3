@@ -55,9 +55,8 @@ class Article
     private $userLikes;
 
     /**
-     * @var string $image
      * @Assert\File( maxSize = "1024k", mimeTypesMessage = "Please upload a valid Image")
-     * @ORM\Column(name="image", type="string", length=255, nullable=true)
+     * @ORM\Column(name="image", type="string", length=255)
      */
     private $image;
 
