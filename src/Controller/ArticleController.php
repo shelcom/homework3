@@ -52,6 +52,7 @@ class ArticleController extends Controller
     {
         $allLike = $likes->countLikes($article);
         $comments = new Comment();
+        $comments->setAuthor($this->getUser());
 
 
         $article->addComment($comments);
@@ -84,6 +85,7 @@ class ArticleController extends Controller
     public function article(Request $request)
     {   $user = $this->getUser();
         $article = new Article();
+        $article->setAuthor($this->getUser());
         $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
         $article->setUser($user);

@@ -10,8 +10,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 class AdminType extends AbstractType
 {
 
@@ -21,17 +19,12 @@ class AdminType extends AbstractType
             ->add('email', EmailType::class)
             ->add('firstName', TextType::class)
             ->add('lastName', TextType::class)
-            ->add('password', RepeatedType::class, array(
-                'type' => PasswordType::class,
-                'first_options'  => array('label' => 'Password'),
-                'second_options' => array('label' => 'Repeat Password'),
-            ))
-            ->add('roles', ChoiceType::class,[
+            ->add('roles', ChoiceType::class, [
                 'multiple' => true,
                 'expanded' => true,
-                'choices'  => [
+                'choices' => [
                     'User' => 'ROLE_USER',
-                    'Admin' => 'ROLE_ADMIN'
+                    'Admin' => 'ROLE_ADMIN',
                 ]
             ])
             ->add('submit', SubmitType::class, [
@@ -46,6 +39,7 @@ class AdminType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => User::class,
+            'validation_groups' => ['edit'],
         ));
     }
     
