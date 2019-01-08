@@ -29,6 +29,24 @@ class Comment
      * @ORM\JoinColumn(nullable=false)
      */
     private $article;
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created_at", type="datetimetz")
+     */
+    private $createdAt;
+    /**
+     * @var User
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $author;
+    
+    public function __construct()
+    {   $this->setCreatedAt(new \DateTime());
+
+    }
 
     public function getId()
     {
@@ -55,5 +73,38 @@ class Comment
     {
         $this->article = $article;
         return $this;
+    }
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    public function setAuthor( $author)
+    {
+        $this->author = $author;
+        return $this;
+    }
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     *
+     * @return Comment
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
     }
 }

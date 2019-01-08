@@ -10,7 +10,8 @@
             <h2>{{ article.title | title}}</h2>
            <div class="article-images"> <img src="{{ asset(['/images/', article.image]|join) }}" alt=""></div>
             <tr>
-                <td>{{ article.createdAt|date('F j, Y') }}</td>,
+                <td>{{ article.createdAt|date('F j, Y') }}</td>;
+                <td>{{article.author.firstname}}</td>
             </tr>
 
             <div class="article-body"> {{ article.body}}</div>

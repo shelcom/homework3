@@ -3,7 +3,7 @@
 namespace App\Controller;
 use App\Entity\User;
 use App\Form\LoginType;
-
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 use Symfony\Component\Routing\Annotation\Route;
@@ -33,12 +33,14 @@ class SecurityController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+    
 
     /**
      * @Route("/profile", name="profile")
      */
     public function profile()
     {
+
         return $this->render('blog/profile.html.twig', [
             
         ]);

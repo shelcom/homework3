@@ -78,6 +78,13 @@ class Article
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $user;
+    /**
+     * @var User
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $author;
 
     public function __construct()
     {   $this->setCreatedAt(new \DateTime());
@@ -157,7 +164,16 @@ public function setUser( $user)
         return $this;
     }
 
+    public function getAuthor()
+    {
+        return $this->author;
+    }
 
+    public function setAuthor( $author)
+    {
+        $this->author = $author;
+        return $this;
+    }
     /**
      * Set createdAt
      *

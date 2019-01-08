@@ -73,16 +73,12 @@ class AdminController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $password = $passwordEncoder->encodePassword($user, $user->getPassword());
-            $user->setPassword($password);
             $em->persist($user);
             $em->flush();
 
             return $this->redirectToRoute('admin/dashboard');
 
         }
-
-
         return $this->render('admin/editUser.html.twig', [
             'users' => $user,
             'form' => $form->createView(),
@@ -96,6 +92,7 @@ class AdminController extends AbstractController
     {
         $allLike = $likes->countLikes($article);
         $comments = new Comment();
+        $comments->setAuthor($this->getUser());
 
         $article->addComment($comments);
         $form = $this->createForm(CommentType::class, $comments);
