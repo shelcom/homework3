@@ -10,6 +10,7 @@ namespace App\Controller;
 use App\Entity\Article;
 use App\Entity\Comment;
 use App\Entity\User;
+use App\Entity\UserLike;
 use App\Form\AdminType;
 use App\Form\ArticleType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,6 +19,8 @@ use Symfony\Component\HttpFoundation\File;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Form\CommentType;
 use App\Services\LikeServices;
+use App\Repository\UserLikeRepository;
+use App\Repository\CommentRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -88,9 +91,9 @@ class AdminController extends AbstractController
     /**
      * @Route("admin/article/{id}", name="admin/articles")
      */
-    public function showArticle(Request $request, Article $article, LikeServices $likes)
+    public function showArticle(Request $request, Article $article, CommentRepository $commentRepository)
     {
-        $allLike = $likes->countLikes($article);
+
         $comments = new Comment();
         $comments->setAuthor($this->getUser());
 
@@ -108,7 +111,10 @@ class AdminController extends AbstractController
             return $this->redirectToRoute('article', ['id' => $article->getId()]);
         }
 
-        //$comments = $commentRepository->findBy(['article' => $article]);
+        $comments = $commentRepository->findBy(['article' => $article]);
+        $em = $this->getDoctrine()->getManager();
+        $allLike = $em->getRepository(UserLike::class)
+          ->allLike($article);
 
         return $this->render('blog/article.html.twig', [
             'article' => $article,
@@ -187,6 +193,34 @@ class AdminController extends AbstractController
         return $this->render('blog/post.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+    /**
+     * @Route("/article/{id}/like", name="like")
+     */
+    public function LikeAction(Article $article)
+    {
+        $user = $this->getUser();
+
+        $em = $this->getDoctrine()->getManager();
+        $like = $em->getRepository(UserLike::class)
+            ->findOneBy(['user' => $user, 'article' => $article]);
+
+        if (!$like) {
+            $like = new UserLike();
+            $like
+                ->setArticle($article)
+                ->setUser($user)
+                ->setLikes(true);
+            $em->persist($like);
+            $em->flush();
+
+        } else {
+            $em->remove($like);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('article', ['id' => $article->getId()]);
+
     }
 
 }

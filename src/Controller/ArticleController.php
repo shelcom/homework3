@@ -48,9 +48,9 @@ class ArticleController extends Controller
     /**
      * @Route("/article/{id}", name="articles")
      */
- public function showArticle(Request $request, Article $article, CommentRepository $commentRepository, LikeServices $likes)
+ public function showArticle(Request $request, Article $article, CommentRepository $commentRepository)
     {
-        $allLike = $likes->countLikes($article);
+
         $comments = new Comment();
         $comments->setAuthor($this->getUser());
 
@@ -70,6 +70,9 @@ class ArticleController extends Controller
         }
 
         $comments = $commentRepository->findBy(['article' => $article]);
+        $em = $this->getDoctrine()->getManager();
+        $allLike = $em->getRepository(UserLike::class)
+            ->allLike($article);
 
         return $this->render('blog/article.html.twig', [
             'article' => $article,
